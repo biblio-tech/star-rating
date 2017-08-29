@@ -1,35 +1,9 @@
 <imports >
-    <link rel="import" href="../polymer/polymer.html">
+    <link rel="import" href="../polymer/polymer-element.html">
     <link rel="import" href="../paper-icon-button/paper-icon-button.html">
     <link rel="import" href="../iron-icons/iron-icons.html">
     <link rel="import" href="../iron-icon/iron-icon.html">
 </imports>
-
-<!--
-
-Shows 5 star rating or enables a 5 star rating vote using paper-icon-button and iron-icon.
-
-### Usage
-Rate can be set as an attribute.
-
-    <star-rating rate="2.3"></star-rating>
-
-If star-rating is for reading only it can be set the following way and using a div tag with votes to set the number of votes for the rating
-
-    <star-rating red rate="2" read-only>
-        <div votes>
-            &nbsp (12
-            votes)
-        </div>
-    </star-rating>
-
-### Styling
- Custom property | Description | Default
-----------------|-------------|----------
-`--star-color` | Color set for stars | `#4775D1`
-
-@demo demo/star-rating-demo.html
--->
 
 <dom-module id="star-rating">
     <template>
@@ -44,8 +18,8 @@ If star-rating is for reading only it can be set the following way and using a d
                 };
             }
             [score] {
-                @apply(--layout-horizontal);
-                @apply(--layout-center);
+                @apply --layout-horizontal;
+                @apply --layout-center;
             }
         </style>
         <div score>
@@ -63,37 +37,24 @@ If star-rating is for reading only it can be set the following way and using a d
         </div>
     </template>
     <script>
-        Polymer({
-            is: "star-rating",
-            observers: [],
-            behaviors: [],
-            listeners: {},
-            properties: {
-                _stars: {
-                    type: Array,
-                    value: ["star", "star", "star-half", "star", "star-border"]
-                },
+        class StarRating extends Polymer.Element {
+            static get is() { return 'star-rating'; }
+            static get properties() {return {
+                _stars: {type: Array,value: ["star", "star", "star-half", "star", "star-border"]},
                 // number of stars assigned for score
-                rate: {
-                    type: Number,
-                    value: 0
-                },
+                rate: {type: Number,value: 0},
                 // show votes and disble scoring option
-                readOnly: {
-                    type: Boolean,
-                    value: false
-                }
-            },
-            ready: function () {
-                this._updateStars();
-                this.$.domRepeat.render();
-            },
-            _updateRate: function (e) {
+                readOnly: {type: Boolean,value: false}
+            }}
+            constructor() {
+                super();
+            }
+            _updateRate (e) {
                 var id = parseInt(e.currentTarget.id);
                 this.rate = id + 1;
                 this._updateStars();
-            },
-            _updateStars: function () {
+            }
+            _updateStars () {
                 var intPart = Math.floor(this.rate);
                 var decimalPart = this.rate % 1;
                 for (var i = 0; i < 5; i++) {
@@ -107,6 +68,12 @@ If star-rating is for reading only it can be set the following way and using a d
                 this._stars = [];
                 this._stars = array;
             }
-        });
+            ready() {
+                super.ready() ;
+                this._updateStars();
+                this.$.domRepeat.render();
+            }
+        }
+        customElements.define('star-rating', StarRating);
     </script>
 </dom-module>
