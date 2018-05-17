@@ -30,7 +30,7 @@
                     <iron-icon icon="{{star}}"></iron-icon>
                 </template>
                 <template is="dom-if" if="[[!readOnly]]">
-                    <paper-icon-button disabled$={{readOnly}} id="{{index}}" on-click="_updateRate" icon="{{star}}" aria-label$="[[index]] out of 5 stars"></paper-icon-button>
+                    <paper-icon-button disabled$={{readOnly}} id="{{index}}" on-click="_updateRate" icon="{{star}}" aria-label$="{{index}} out of 5 stars"></paper-icon-button>
                 </template>
             </template>
             <template is="dom-if" if="[[readOnly]]">
